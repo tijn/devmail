@@ -1,0 +1,8 @@
+[Unit]
+Description=A small mail server for developers
+
+[Service]
+ExecStart=/usr/bin/devmail
+
+[Install]
+WantedBy=multi-user.target
