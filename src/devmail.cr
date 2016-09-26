@@ -1,5 +1,4 @@
 require "option_parser"
-require "logger"
 require "./devmail/config"
 require "./devmail/store"
 require "./devmail/smtp_server"
@@ -37,9 +36,7 @@ OptionParser.parse! do |parser|
   end
 end
 
-$log = Logger.new(STDOUT)
-$log.level = verbose ? Logger::DEBUG : Logger::INFO
-# $log.datetime_format = "%H:%M:%S"
+LOG.level = verbose ? Logger::DEBUG : Logger::INFO
 
 store = Store.new
 smtp_server = SMTPServer.new(store, smtp_port)

@@ -1,4 +1,5 @@
 require "socket"
+require "./log"
 
 # This class starts a generic server, accepting multiple connections on the given port
 #
@@ -18,7 +19,7 @@ class GenericServer
 
   # Accept connections in separate fibers so we can handle multiple concurrent connections
   def run
-    $log.info "#{self.class} listening on port #{@port}"
+    LOG.info "#{self.class} listening on port #{@port}"
     spawn do
       loop do
         spawn handle_session(@server.accept)
@@ -34,7 +35,7 @@ class GenericServer
     handler = session_handler(client)
 
     client_addr = client.remote_address
-    $log.info "#{self.class} connection #{client.object_id} from #{client_addr} accepted"
+    LOG.info "#{self.class} connection #{client.object_id} from #{client_addr} accepted"
     handler.greet
 
     # Keep processing commands until somebody closes the connection
@@ -42,13 +43,13 @@ class GenericServer
       input = client.gets
       # The first word of a line should contain the command
       command = input.to_s.split(' ', 2).first.upcase.strip
-      $log.debug "#{self.class} #{client.object_id} < #{input}"
+      LOG.debug "#{self.class} #{client.object_id} < #{input}"
       handler.process_command(command, input)
       break if client.closed?
     end
-    $log.info "#{self.class} connection #{client.object_id} from #{client_addr} closed"
+    LOG.info "#{self.class} connection #{client.object_id} from #{client_addr} closed"
   rescue ex
-    $log.error "#{self.class} #{client.object_id} ! #{ex}"
+    LOG.error "#{self.class} #{client.object_id} ! #{ex}"
     client.close
   end
 end

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>local.devmail</string>
+    <key>Program</key>
+    <string>/usr/local/bin/devmail</string>
+<!--     <key>ProgramArguments</key>
+    <array>
+      <string>/usr/bin/rsync</string>
+      <string>--pop3 1100</string>
+      <string>--smtp 2525</string>
+    </array> -->
+    <key>RunAtLoad</key>
+    <true/>
+  </dict>
+</plist>
