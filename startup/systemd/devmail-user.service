@@ -1,0 +1,8 @@
+[Unit]
+Description=A small mail server for developers
+
+[Service]
+ExecStart=%h/bin/devmail --pop3 1010 --smtp 2525
+
+[Install]
+WantedBy=multi-user.target
