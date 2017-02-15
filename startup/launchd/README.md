@@ -6,7 +6,10 @@ Compile devmail and copy to
     crystal build
     cp devmail /usr/local/bin/
 
-Copy the plist to
+Copy the plist to /Library/LaunchDaemons/
 
-    cp startup/launchd/local.devmail.plist ~/Library/LaunchAgents/
+    sudo cp startup/launchd/local.devmail.plist /Library/LaunchDaemons/
 
+Load it
+
+    sudo launchctl load -w /Library/LaunchDaemons/local.devmail.plist
