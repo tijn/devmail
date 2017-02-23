@@ -35,21 +35,22 @@ class GenericServer
     handler = session_handler(client)
 
     client_addr = client.remote_address
-    LOG.info "#{self.class} connection #{client.object_id} from #{client_addr} accepted"
+    connection_id = client.object_id
+    LOG.info "#{self.class} connection #{connection_id} from #{client_addr} accepted"
     handler.greet
 
     # Keep processing commands until somebody closes the connection
     while true
-      input = client.gets
+      input = client.gets(false)
       # The first word of a line should contain the command
       command = input.to_s.split(' ', 2).first.upcase.strip
-      LOG.debug "#{self.class} #{client.object_id} < #{input}"
+      LOG.debug "#{self.class} connection #{connection_id} < #{input}"
       handler.process_command(command, input)
       break if client.closed?
     end
-    LOG.info "#{self.class} connection #{client.object_id} from #{client_addr} closed"
+    LOG.info "#{self.class} connection #{connection_id} from #{client_addr} closed"
   rescue ex
-    LOG.error "#{self.class} #{client.object_id} ! #{ex}"
+    LOG.error "#{self.class} #{connection_id} ! #{ex}"
     client.close
   end
 end
