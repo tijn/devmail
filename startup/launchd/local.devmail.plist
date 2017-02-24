@@ -8,7 +8,6 @@
     <string>/usr/local/bin/devmail</string>
 <!--     <key>ProgramArguments</key>
     <array>
-      <string>/usr/bin/rsync</string>
       <string>--pop3 1100</string>
       <string>--smtp 2525</string>
     </array> -->
