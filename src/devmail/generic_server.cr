@@ -1,25 +1,19 @@
 require "socket"
 require "./log"
 
-# This class starts a generic server, accepting multiple connections on the given port
+# This class starts a generic server, accepting multiple connections on the given port.
 #
-# It reads the first word of the input and passes it to a handler (uppercased)
-# e.g. QUIT or LIST
+# It is written to support a specific (but common) type of server that accepts lines that look like this:
+#     <COMMAND> [<PAYLOAD>]
+# It reads the first word of the input, the command (e.g. QUIT or LIST) and passes it to a handler together with the payload. It will uppercase the command so that a session handler can ignore upper/lower case when  processing commands.
 class GenericServer
   def initialize(@port : Int32)
     @server = TCPServer.new(@port)
-
-    # Try to increase the buffer to give us some more time to parse incoming data
-    # begin
-    #   server.setsockopt(Socket::SOL_SOCKET, Socket::SO_RCVBUF, 1024 * 1024)
-    # rescue
-    #   # then try it using our available buffer
-    # end
   end
 
-  # Accept connections in separate fibers so we can handle multiple concurrent connections
   def run
     LOG.info "#{self.class} listening on port #{@port}"
+    # Accept connections in separate fibers so we can handle multiple concurrent connections
     spawn do
       loop do
         spawn handle_session(@server.accept)
@@ -27,12 +21,12 @@ class GenericServer
     end
   end
 
-  def session_handler(client)
-    self
+  def build_session_handler(client)
+    Session.new(client)
   end
 
   def handle_session(client)
-    handler = session_handler(client)
+    handler = build_session_handler(client)
 
     client_addr = client.remote_address
     connection_id = client.object_id
@@ -41,12 +35,16 @@ class GenericServer
 
     # Keep processing commands until somebody closes the connection
     while true
+      break if client.closed?
+
       input = client.gets(false)
+      next if input.nil?
+
       # The first word of a line should contain the command
-      command = input.to_s.split(' ', 2).first.upcase.strip
+      input = input.to_s
+      command = input.split(' ', 2).first.upcase.strip
       LOG.debug "#{self.class} connection #{connection_id} < #{input}"
       handler.process_command(command, input)
-      break if client.closed?
     end
     LOG.info "#{self.class} connection #{connection_id} from #{client_addr} closed"
   rescue ex

@@ -36,18 +36,18 @@ class SMTPSession < Session
     @sending_data = false
   end
 
-  def process_command(command, full_data)
+  def process_command(command : String, full_data : String)
     case command
     when "DATA"         then data
     when "HELO", "EHLO" then respond(250)
     when "NOOP"         then respond(250)
-    when "MAIL"         then mail_from(full_data.to_s)
+    when "MAIL"         then mail_from(full_data)
     when "QUIT"         then quit
-    when "RCPT"         then rcpt_to(full_data.to_s)
+    when "RCPT"         then rcpt_to(full_data)
     when "RSET"         then rset
     else
       if @sending_data
-        append_data(full_data.to_s)
+        append_data(full_data)
       else
         respond(500)
       end

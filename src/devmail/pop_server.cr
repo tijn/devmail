@@ -8,7 +8,7 @@ class POPServer < GenericServer
     super(port)
   end
 
-  def session_handler(client)
+  def build_session_handler(client)
     POPSession.new(client, @store)
   end
 end

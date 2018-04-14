@@ -13,20 +13,20 @@ class POPSession < Session
   end
 
   # Process command
-  def process_command(command, full_data)
+  def process_command(command : String, full_data : String)
     case command
     when "CAPA" then capa
-    when "DELE" then dele(message_number(full_data.to_s))
-    when "LIST" then list(message_number(full_data.to_s))
+    when "DELE" then dele(message_number(full_data))
+    when "LIST" then list(message_number(full_data))
     when "NOOP" then respond(true, "Yup.")
     when "PASS" then pass(full_data)
     when "QUIT" then quit
-    when "RETR" then retr(message_number(full_data.to_s))
+    when "RETR" then retr(message_number(full_data))
     when "RSET" then respond(true, "Resurrected.")
     when "STAT" then stat
-    when "TOP"  then top(full_data.to_s)
-    when "UIDL" then uidl(message_number(full_data.to_s))
-    when "USER" then user(full_data.to_s)
+    when "TOP"  then top(full_data)
+    when "UIDL" then uidl(message_number(full_data))
+    when "USER" then user(full_data)
     else
       respond(false, "Invalid command.")
     end

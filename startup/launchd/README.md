@@ -3,7 +3,7 @@
 Compile devmail and copy to
 
     brew install crystal-lang
-    crystal build
+    crystal build src/devmail.cr
     cp devmail /usr/local/bin/
 
 Copy the plist to /Library/LaunchDaemons/
