@@ -1,7 +1,7 @@
-/doc/
 /libs/
 /.crystal/
 /.shards/
 ./devmail
 devmail
 .DS_Store
+docs/
