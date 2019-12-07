@@ -15,7 +15,7 @@ verbose = options.fetch("verbose", false) == "true"
 smtp_port = options.fetch("smtp_port", 25).to_i
 pop3_port = options.fetch("pop3_port", 110).to_i
 
-OptionParser.parse! do |parser|
+OptionParser.parse do |parser|
   parser.banner = "Usage: #{program} [options]"
 
   parser.on("-h", "--help", "Display this screen") do
