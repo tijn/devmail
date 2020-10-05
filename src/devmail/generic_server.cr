@@ -12,7 +12,7 @@ class GenericServer
   end
 
   def run
-    LOG.info "#{self.class} listening on port #{@port}"
+    Log.info { "#{self.class} listening on port #{@port}" }
     # Accept connections in separate fibers so we can handle multiple concurrent connections
     spawn do
       loop do
@@ -30,7 +30,7 @@ class GenericServer
 
     client_addr = client.remote_address
     connection_id = client.object_id
-    LOG.info "#{self.class} connection #{connection_id} from #{client_addr} accepted"
+    Log.info { "#{self.class} connection #{connection_id} from #{client_addr} accepted" }
     handler.greet
 
     # Keep processing commands until somebody closes the connection
@@ -43,12 +43,12 @@ class GenericServer
       # The first word of a line should contain the command
       input = input.to_s
       command = input.split(' ', 2).first.upcase.strip
-      LOG.debug "#{self.class} connection #{connection_id} < #{input}"
+      Log.debug { "#{self.class} connection #{connection_id} < #{input}" }
       handler.process_command(command, input)
     end
-    LOG.info "#{self.class} connection #{connection_id} from #{client_addr} closed"
+    Log.info { "#{self.class} connection #{connection_id} from #{client_addr} closed" }
   rescue ex
-    LOG.error "#{self.class} #{connection_id} ! #{ex}"
+    Log.error { "#{self.class} #{connection_id} ! #{ex}" }
     client.close
   end
 end

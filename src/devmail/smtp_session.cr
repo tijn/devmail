@@ -107,7 +107,7 @@ class SMTPSession < Session
     if full_data.gsub(/[\r\n]/, "") == "."
       @store.add(@from, @to, @data.to_s)
       respond(250)
-      LOG.info "Received mail from #{@from} to #{@to}"
+      Log.info { "Received mail from #{@from} to #{@to}" }
     else
       @data = @data + full_data
     end

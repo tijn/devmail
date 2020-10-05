@@ -36,7 +36,11 @@ OptionParser.parse do |parser|
   end
 end
 
-LOG.level = verbose ? Logger::DEBUG : Logger::INFO
+if verbose
+  Log.setup(:debug, Log::IOBackend.new(formatter: ExtraShort))
+else
+  Log.setup(:info, Log::IOBackend.new(formatter: ExtraShort))
+end
 
 store = Store.new
 smtp_server = SMTPServer.new(store, smtp_port)
