@@ -10,15 +10,15 @@ class Session
   end
 
   def process_command(command : String, full_data : String)
-    LOG.debug "#{@client.object_id} < command=<#{command}> #{full_data}"
+    Log.debug { "#{@client.object_id} < command=<#{command}> #{full_data}" }
   end
 
   # Respond to client by sending back text
   def respond(text : String)
-    LOG.debug "#{@client.object_id} > #{text}"
+    Log.debug { "#{@client.object_id} > #{text}" }
     @client.write text.to_s.to_slice
   rescue ex
-    LOG.error "#{@client.object_id} ! #{ex}"
+    Log.error { "#{@client.object_id} ! #{ex}" }
     @client.close
   end
 end
