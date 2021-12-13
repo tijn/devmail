@@ -1,3 +1,7 @@
-require "logger"
+require "log"
 
-LOG = Logger.new(STDOUT)
+struct ExtraShort < Log::StaticFormatter
+  def run
+    message
+  end
+end
