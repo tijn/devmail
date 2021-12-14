@@ -2,7 +2,7 @@ FROM crystallang/crystal:1.2.2-alpine as build
 RUN apk --no-cache add make
 WORKDIR /root/
 COPY . ./
-RUN make
+RUN ['/usr/bin/crystal', 'build', '--release', '--static', 'src/devmail.cr']
 
 FROM alpine:latest
 # TODO install crystal libs
