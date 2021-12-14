@@ -1,11 +1,11 @@
 FROM crystallang/crystal:1.2.2-alpine as build
 RUN apk --no-cache add make
 WORKDIR /root/
-COPY . ./
-RUN ['/usr/bin/crystal', 'build', '--release', '--static', 'src/devmail.cr']
+RUN ["mkdir", "src"]
+COPY ./src src/
+RUN ["crystal", "build", "--release", "--static", "src/devmail.cr"]
 
 FROM alpine:latest
-# TODO install crystal libs
 WORKDIR /root/
 COPY --from=build /root/devmail ./
 EXPOSE 110
