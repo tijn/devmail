@@ -1,4 +1,5 @@
 require "option_parser"
+require "signal"
 require "./devmail/config"
 require "./devmail/store"
 require "./devmail/smtp_server"
@@ -41,6 +42,10 @@ if verbose
 else
   Log.setup(:info, Log::IOBackend.new(formatter: ExtraShort))
 end
+
+Signal::INT.trap { exit }
+Signal::TERM.trap { exit }
+Signal::QUIT.trap { exit }
 
 store = Store.new
 smtp_server = SMTPServer.new(store, smtp_port)
