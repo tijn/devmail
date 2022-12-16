@@ -10,4 +10,4 @@ WORKDIR /root/
 COPY --from=build /root/devmail ./
 EXPOSE 110
 EXPOSE 25
-CMD ["./devmail"]
+ENTRYPOINT ["./devmail"]
