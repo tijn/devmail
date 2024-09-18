@@ -5,3 +5,7 @@ authors:
   - Tijn Schuurmans <tijn@tijnschuurmans.nl>
 
 license: MIT
+
+targets:
+  devmail:
+    main: src/devmail.cr
